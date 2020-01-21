@@ -195,4 +195,14 @@ app.get("/list", async (req, res) => {
     return res.status(500).send(e);
   }
 });
+app.get("/redirect/:app", async (req, res) => {
+  let app = req.params.app;
+  return res.json(
+    {
+      forms: {
+        redirect: "https://forms.freshair.org.uk/token/"
+      }
+    }[app] || { error: true }
+  );
+});
 app.listen(port, () => console.log(`auth.api listening on port ${port}!`));
