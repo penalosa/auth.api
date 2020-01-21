@@ -140,10 +140,11 @@ app.post("/login", async (req, res) => {
         password
       })
     });
-    console.log(auth);
+    console.log(auth.status);
     if (auth.status == 401) {
       return res.status(401).send();
     } else if (auth.status == 201) {
+      console.log(201);
       const cookie = auth.headers.raw()["set-cookie"];
 
       const me = await fetch(`${ghostBase}/users/me/?include=roles`, {
