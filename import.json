@@ -1,0 +1,23 @@
+{
+  "data": {
+    "posts": [],
+    "tags": [],
+    "posts_tags": [],
+    "users": [
+      {
+        "id": 1,
+        "slug": "person",
+        "bio": "I am a person on the website",
+        "website": "https://www.example.com",
+        "created_by": 1,
+        "email": "person@example.com",
+        "name": "Some Person",
+        "profile_image": ""
+      }
+    ]
+  },
+  "meta": {
+    "exported_on": "Thu, 3 Aug 2019 13:46:48 +0530",
+    "version": "2.14.0"
+  }
+}
