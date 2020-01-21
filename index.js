@@ -171,6 +171,7 @@ app.post("/login", async (req, res) => {
       });
       return res.json({ ...projection, token });
     } else {
+      console.log("Other", auth.status);
       return res.status(500).send(await auth.text());
     }
   } catch (e) {
