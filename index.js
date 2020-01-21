@@ -133,7 +133,7 @@ app.post("/login", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Origin: "https://dash.freshair.org.uk"
+        Origin: "https://auth.api.freshair.org.uk"
       },
       body: JSON.stringify({
         username,
@@ -146,7 +146,6 @@ app.post("/login", async (req, res) => {
     } else if (auth.status == 201) {
       console.log(201);
       const cookie = auth.headers.raw()["set-cookie"];
-      console.log(cookie);
       const me = await fetch(`${ghostBase}/users/me/?include=roles`, {
         method: "GET",
         headers: {
