@@ -155,7 +155,7 @@ app.post("/login", async (req, res) => {
           Cookie: cookie[0]
         }
       });
-      console.log(me);
+      console.log(await me.text());
       let data = (await me.json()).users[0];
       console.log(cookie);
       let projection = {
