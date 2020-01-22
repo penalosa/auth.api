@@ -19,7 +19,7 @@ const ghostToken = process.env.GHOST_TOKEN;
 const ghostRequest = async (path, method = "GET", body, retries = 3) => {
   const [id, secret] = ghostToken.split(":");
   const token = await sign({}, Buffer.from(secret, "hex"), {
-    keyid: id,
+    kid: id,
     algorithm: "HS256",
     expiresIn: "5m",
     audience: `/canary/admin/`
@@ -33,6 +33,7 @@ const ghostRequest = async (path, method = "GET", body, retries = 3) => {
       Authorization: `Ghost ${token}`
     }
   });
+  console.log();
   console.log(`${path} ${req.status} ${retries}`);
   let json = await req.json();
   if (req.status == 500) console.log(json);
