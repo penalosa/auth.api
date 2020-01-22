@@ -16,7 +16,7 @@ const ghostBase =
   process.env.GHOST_URI || "http://localhost:2368/ghost/api/canary/admin";
 const jwtSecret = process.env.JWT_SECRET || "This book will chnage your life";
 const ghostToken = process.env.GHOST_TOKEN;
-const ghostRequest = async (path, method = "GET", body) => {
+const ghostRequest = async (path, method = "GET", body, retries = 3) => {
   const [id, secret] = ghostToken.split(":");
   const token = await sign({}, Buffer.from(secret, "hex"), {
     keyid: id,
@@ -24,21 +24,23 @@ const ghostRequest = async (path, method = "GET", body) => {
     expiresIn: "5m",
     audience: `/canary/admin/`
   });
-  console.log({
-    ...(body ? { body: JSON.stringify(body) } : {}),
-    method,
-    headers: {
-      Authorization: `Ghost ${token}`
-    }
-  });
-  return await fetch(`${ghostBase}${path}`, {
+
+  let req = await fetch(`${ghostBase}${path}`, {
     ...(body ? { body: JSON.stringify(body) } : {}),
     method,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Ghost ${token}`
     }
-  }).then(r => r.json());
+  });
+  console.log(`${path} ${req.status}`);
+  let json = await req.json();
+  if (req.status == 500) console.log(json);
+  if (req.status == 500 && retries > 0) {
+    return await ghostRequest(path, method, body, retries - 1);
+  } else {
+    return json;
+  }
 };
 const sign = (data, s = jwtSecret) =>
   new Promise((yes, no) => {
