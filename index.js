@@ -97,7 +97,14 @@ app.get("/import", async (req, res) => {
     version: "v3"
   });
 
-  res.json(await api.users.browse());
+  res.json(
+    (await api.users.browse({ include: "roles" })).map(u => ({
+      name,
+      pic: u.profile_image,
+      slug,
+      role: "Author"
+    }))
+  );
 });
 app.post("/upload", upload.single("upload"), async (req, res) => {
   if (!req.file) {
