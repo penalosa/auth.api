@@ -89,7 +89,7 @@ const upload = multer({
   limits: { fileSize: 524288000 }
 });
 app.get("/import", async (req, res) => {
-  res.json(await ghostRequest("/users"));
+  res.json(await ghostRequest("/users?limit=all&include=roles"));
 });
 app.post("/upload", upload.single("upload"), async (req, res) => {
   if (!req.file) {
