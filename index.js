@@ -19,7 +19,8 @@ const ghostToken = process.env.GHOST_TOKEN;
 const ghostRequest = async (path, method = "GET", body, retries = 3) => {
   const [id, secret] = ghostToken.split(":");
   const token = await sign({}, Buffer.from(secret, "hex"), {
-    kid: id,
+    kid: "no",
+    keyid: id,
     algorithm: "HS256",
     expiresIn: "5m",
     audience: `/canary/admin/`
