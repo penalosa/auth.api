@@ -102,7 +102,7 @@ app.get("/import", async (req, res) => {
       name: u.name,
       pic: u.profile_image,
       slug: u.slug,
-      role: u.roles[0].title
+      role: u.roles
     }))
   );
 });
