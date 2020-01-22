@@ -19,7 +19,6 @@ const ghostToken = process.env.GHOST_TOKEN;
 const ghostRequest = async (path, method = "GET", body, retries = 3) => {
   const [id, secret] = ghostToken.split(":");
   const token = await sign({}, Buffer.from(secret, "hex"), {
-    kid: "no",
     keyid: id,
     algorithm: "HS256",
     expiresIn: "5m",
@@ -75,6 +74,7 @@ const User = mongoose.model(
     }
   )
 );
+const GhostAdminAPI = require("@tryghost/admin-api");
 
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/prod", {
   useNewUrlParser: true
@@ -91,7 +91,13 @@ const upload = multer({
   limits: { fileSize: 524288000 }
 });
 app.get("/import", async (req, res) => {
-  res.json(await ghostRequest("/users?limit=all&include=roles"));
+  const api = new GhostAdminAPI({
+    url: "https://content.freshair.org.uk",
+    key: ghostToken,
+    version: "v3"
+  });
+
+  res.json(await api.users.browse());
 });
 app.post("/upload", upload.single("upload"), async (req, res) => {
   if (!req.file) {
