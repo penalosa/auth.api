@@ -98,7 +98,7 @@ app.get("/import", async (req, res) => {
   });
 
   res.json(
-    (await api.users.browse({})).map(u => ({
+    (await api.users.browse({ limit: "all", include: "roles" })).map(u => ({
       name: u.name,
       pic: u.profile_image,
       slug: u.slug,
