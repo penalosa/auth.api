@@ -99,9 +99,9 @@ app.get("/import", async (req, res) => {
 
   res.json(
     (await api.users.browse({ include: "roles" })).map(u => ({
-      name,
+      name: u.name,
       pic: u.profile_image,
-      slug,
+      slug: u.slug,
       role: "Author"
     }))
   );
