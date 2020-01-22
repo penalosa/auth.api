@@ -33,7 +33,7 @@ const ghostRequest = async (path, method = "GET", body, retries = 3) => {
       Authorization: `Ghost ${token}`
     }
   });
-  console.log(`${path} ${req.status}`);
+  console.log(`${path} ${req.status} ${retries}`);
   let json = await req.json();
   if (req.status == 500) console.log(json);
   if (req.status == 500 && retries > 0) {
