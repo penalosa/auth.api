@@ -123,7 +123,7 @@ app.post("/register", async (req, res) => {
       if (json.errors.find(e => e.code == "ER_DUP_ENTRY")) {
         return res.sendStatus(409);
       }
-      console.error(e);
+      console.error(json);
 
       return res.status(500).send(json);
     }
