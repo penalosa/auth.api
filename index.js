@@ -99,6 +99,7 @@ app.post("/upload", upload.single("upload"), async (req, res) => {
 const morgan = require("morgan");
 app.use(morgan("combined"));
 app.use(express.json());
+
 app.post("/register", async (req, res) => {
   try {
     let {
@@ -155,11 +156,16 @@ app.post("/login", async (req, res) => {
     if (auth.status == 401) {
       let json = await auth.json();
       console.error(json);
-      return res.status(401).json(json);
+      try {
+        let exists = await Admin.users.read({ email: username });
+        return res.status(423).json(json);
+      } catch (e) {
+        return res.status(404).json(json);
+      }
     } else if (auth.status == 429) {
       let json = await auth.json();
       console.error(json);
-      return res.status(401).json(json);
+      return res.status(429).json(json);
     } else if (auth.status == 201) {
       console.log(201);
       const cookie = auth.headers.raw()["set-cookie"];
