@@ -158,6 +158,17 @@ app.post("/login", async (req, res) => {
       console.error(json);
       try {
         let exists = await Admin.users.read({ email: username });
+        const reset = await fetch(`${ghostBase}/authentication/passwordreset`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Origin: "https://auth.api.freshair.org.uk"
+          },
+          body: JSON.stringify({
+            passwordreset: [{ email: username }]
+          })
+        });
+        console.log(await reset.json());
         return res.status(423).json(json);
       } catch (e) {
         return res.status(404).json(json);
