@@ -156,6 +156,9 @@ app.post("/login", async (req, res) => {
     if (auth.status == 401) {
       let json = await auth.json();
       console.error(json);
+      if (json.errors.find(e => e.code)) {
+        return res.status(401).json(json);
+      }
       try {
         let exists = await Admin.users.read({ email: username });
         const reset = await fetch(`${ghostBase}/authentication/passwordreset`, {
