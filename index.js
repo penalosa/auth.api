@@ -120,7 +120,7 @@ app.post("/register", async (req, res) => {
     });
     let json = await auth.json();
     if (json.errors) {
-      if (json.errors.find(e => e.code == "ER_DUP_ENTRY")) {
+      if (json.errors.find(e => e.code == "SQLITE_CONSTRAINT")) {
         return res.sendStatus(409);
       }
       console.error(json);
